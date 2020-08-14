@@ -60,11 +60,11 @@ losDosSonPeligrosos(Personaje,OtroPersonaje):-
 
 %encargo(Solicitante, Encargado, Tarea). 
 %las tareas pueden ser cuidar(Protegido), ayudar(Ayudado), buscar(Buscado, Lugar)
-encargo(marsellus, vincent,   cuidar(mia)).
-encargo(vincent,  elVendedor, cuidar(mia)).
-encargo(marsellus, winston, ayudar(jules)).
-encargo(marsellus, winston, ayudar(vincent)).
-encargo(marsellus, vincent, buscar(butch, losAngeles)).
+encargo(marsellus,vincent,cuidar(mia)).
+encargo(vincent,elVendedor,cuidar(mia)).
+encargo(marsellus,winston,ayudar(jules)).
+encargo(marsellus,winston,ayudar(vincent)).
+encargo(marsellus,vincent,buscar(butch, losAngeles)).
 encargo(marsellus,vincent,ayudar(winston)). % se lo agrego para probar que masAtareado anda bien
 
 estaEnProblemas(Personaje):-
@@ -114,27 +114,24 @@ queRolTieneElMafioso(maton,1).
 queRolTieneElMafioso(capo,20).
 
 hartoDe(Personaje,OtroPersonaje):-
-    personaje(Personaje,_),
-    forall(encargo(_,Personaje,Encargo),conQuienTieneQueTrabajar(Personaje,Encargo)).
+    personaje(Personaje,_),    
+    encargo(_,Personaje,Encargo),
+    conQuienInteractua(Encargo,OtroPersonaje),
+    forall((encargo(_,Personaje,OtroEncargo),OtroEncargo \= Encargo,
+    conQuienInteractua(OtroEncargo,Persona)),esLaMismaPersonaOAmigoDe(OtroPersonaje,Persona)).
 
-conQuienTieneQueTrabajar(Personaje,buscar(OtroPersonaje,_)):-
-    personaje(Personaje,_),
-    esAmigoOAmigoDeAmigo(Personaje,OtroPersonaje).
+%tomo un encargo para fijarme la persona con la que interactua y despues tomo todos los demas y me fijo que sea la misma persona O
+%un amigo de ella.Los primeros los tomo para definir a una y despues compararla con las demas.
 
-conQuienTieneQueTrabajar(Personaje,ayudar(OtroPersonaje)):-
-    personaje(Personaje,_),
-    esAmigoOAmigoDeAmigo(Personaje,OtroPersonaje).
+conQuienInteractua(buscar(OtroPersonaje,_),OtroPersonaje).
+conQuienInteractua(ayudar(OtroPersonaje),OtroPersonaje).
+conQuienInteractua(cuidar(OtroPersonaje),OtroPersonaje).
 
-conQuienTieneQueTrabajar(Personaje,cuidar(OtroPersonaje)):-
-    personaje(Personaje,_),
-    esAmigoOAmigoDeAmigo(Personaje,OtroPersonaje).
+esLaMismaPersonaOAmigoDe(OtroPersonaje,AmigoDe):- %es la misma persona.
+    OtroPersonaje == AmigoDe.
 
-esAmigoOAmigoDeAmigo(Personaje,OtroPersonaje):-
-    sonAmigos(OtroPersonaje,Personaje).
-
-esAmigoOAmigoDeAmigo(Personaje,AmigoDelAmigo):-
-    sonAmigos(Personaje,OtroPersonaje),
-    esAmigoOAmigoDeAmigo(OtroPersonaje,AmigoDelAmigo).
+esLaMismaPersonaOAmigoDe(OtroPersonaje,AmigoDe):- 
+    sonAmigos(OtroPersonaje,AmigoDe).
 
 caracteristicas(vincent,[negro, muchoPelo, tieneCabeza]).
 caracteristicas(jules,[tieneCabeza, muchoPelo]).

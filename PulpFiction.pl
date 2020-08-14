@@ -91,7 +91,8 @@ sanCayetano(Personaje):-
 masAtareado(Personaje):-
     personaje(Personaje,_),
     cuantosEncargosTiene(Personaje,CantidadDeEncargos),
-    forall((personaje(OtroPersonaje,_),OtroPersonaje \= Personaje,cuantosEncargosTiene(OtroPersonaje,OtrosEncargos)),CantidadDeEncargos > OtrosEncargos).
+    forall((personaje(OtroPersonaje,_),OtroPersonaje \= Personaje,cuantosEncargosTiene(OtroPersonaje,OtrosEncargos)),
+    CantidadDeEncargos > OtrosEncargos).
 
 cuantosEncargosTiene(Personaje,CantidadDeEncargos):-
     findall(Encargos,encargo(_,Personaje,Encargos),ListaEncargos),

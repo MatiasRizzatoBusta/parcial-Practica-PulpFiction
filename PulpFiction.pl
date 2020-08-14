@@ -144,7 +144,7 @@ duoDiferenciable(Personaje,OtroPersonaje):-
     sonAmigosOPareja(Personaje,OtroPersonaje),
     findall(Caracteristicas,caracteristicas(Personaje,Caracteristicas),ListasDeCaracteristicas),
     findall(OtrasCar,caracteristicas(OtroPersonaje,OtrasCar),OtraListaDeCar),
-    not(ListasDeCaracteristicas = OtraListaDeCar). %si la lista de caracteristicas no son iguales es pq se diferencian en al menos 1.
+    not(ListasDeCaracteristicas == OtraListaDeCar). %si la lista de caracteristicas no son iguales es pq se diferencian en al menos 1.
 
 sonAmigosOPareja(X,Y):-
     sonPareja(X,Y).
